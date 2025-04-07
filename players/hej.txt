@@ -1,0 +1,10 @@
+hej
+7
+orc
+knight
+100
+sword 
+bow 
+milk_bucket 
+gold 
+entrance
