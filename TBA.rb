@@ -2,23 +2,23 @@
 
 
 #character 
-class person 
+class Player 
   def initialize()
-    @inventory = [[], [], [], []]
+    @inventory = [[], [], [[],[]], []]
     @weapons = []
     @ranged = []
-    @armor = [] #fixa sennare 
-    @potions = ["milk_bucket"]
-    @misc = ["gold", "silver", "bronze"]
-    @klasser = ["Jakob Widebrant", "knight", "peseant", "magician", "alchemist", "archer", "ranger"]
+    @armor = ["No armour", 0] #fixa sennare 
+    @potions = ["small_health_potion", "medium_health_potion", "large_health_potion", "max_health_potion", "small_damage_potion", "medium_damage_potion", "large_damage_potion", "one_hit_potion"]
+    @misc = ["fur_hat", "mickey_mouse_hat", "santa_hat", "party_hat", "party_horn", "party_blowout"]
+    @klasser = ["jakob_widebrant", "knight", "peseant", "alchemist", "archer", "ranger"]
     @races = ["orc","warewolf", "dwarf", "elf", "human"]
-   
+    @max_health = 100
    
    
     # Kollar om spelaren har spelat tidigare 
     # om spelaren har spelat tidigare så laddar vi in deras karaktär
     # om spelaren inte har spelat tidigare så skapar vi en ny karaktär
-    # och sparar den i en fil
+    # och sparar den i en personlig fil
     
     puts "Please provide your name"
     @name = gets.chomp.downcase.to_s
@@ -27,7 +27,6 @@ class person
     if File.exist?("#{@name}.txt")
       load()
       puts "Welcome back #{@name}!"
-      puts "You are a #{@age} year old #{@race} #{@klass} with #{@health} health."
     else
       puts "Welcome #{@name}!"
       puts "Please provide your age"
@@ -56,38 +55,119 @@ class person
         @klass = gets.chomp.downcase.to_s
       end
       @health = 100
+
+      if @klass == "knight"
+        puts "You have chosen the knight class"
+        puts "You have now been equipped with a Half-sword"
+        @max_health = 200
+        @health = 200
+        @inventory[0] << "Half_Sword"
+      elsif @klass == "archer"
+        puts "You have chosen the archer class"
+        puts "You have now been equipped with a Short_bow"
+        @max_health = 90
+        @health = 90
+        @inventory[1] << "Short_bow"
+      elsif @klass == "Jakob Widebrant"
+        puts "You are now Jakob Widebrant"
+        puts "You have now been equipped with a gamecubespiklubba and a lasersvärd"
+        puts "You are a GOD"
+        @max_health = 500
+        @health = 400
+        @inventory[0] << "gamecubespiklubba"
+        @inventory[0] << "lasersvärd"
+      elsif @klass == "peasant"
+        puts "You have chosen the peasant class"
+        puts "You have now been equipped with a muddy rock"
+        puts "You are a dirty little peasant with no chance in life"
+        @max_health = 80
+        @health = 50
+        @inventory[0] << "muddy rock"
+      elsif @klass == "alchemist"
+        puts "You have chosen the alchemist class"
+        puts "You have now been equipped with a set of potions"
+        @max_health = 110
+        @inventory[0] << "staff_of_alchemy"
+        i = 0
+        while i < 10
+          @inventory[2][0] << "small_health_potion"
+          @inventory[2][1] << "small_damage_potion"
+          i +=1
+        end
+        i = 0
+        while i < 5
+          @inventory[2][0] << "medium_health_potion"
+          @inventory[2][1] << "medium_damage_potion"
+          i +=1
+        end
+        i = 0
+        while i < 2
+          @inventory[2][0] << "large_health_potion"
+          @inventory[2][1] << "large_damage_potion"
+          i +=1
+        end
+
+        @inventory[2] << "setofpotions"
+
+      elsif @klass == "ranger"
+        puts "You have chosen the ranger class"
+        puts "You have now been equipped with a hunting bow"
+        @max_health = 110
+        @inventory[1] << "hunting_bow"
+      end
+      
+      @room = "entrance"
     end
     
     save("entrance") #autosave
     puts "autosave"
+
+    puts "You are a #{@age} year old #{@race} #{@klass} with #{@health} health."
+    puts "You have the following items in your inventory:"
+    puts "Weapons: #{@inventory[0]}"
+    puts "Ranged: #{@inventory[1]}"
+    puts "Potions: #{@inventory[2]}"
+    puts "Misc: #{@inventory[3]}"
+    puts "You are in the #{@room}."
+    puts "You can now continue your adventure"
+    puts "Write continue to continue your adventure"
+    input = gets.chomp.downcase.to_s
+    while input != "continue"
+      puts "Invalid input! Please write continue to continue your adventure"
+      input = gets.chomp.downcase.to_s
+    end
   end
   def meele_attack(weapon, enemy)
-    base_damage = rand(5..10) # base damage is random between 1 and 10
+    base_damage = rand(5..10).to_fu # base damage is random between 1 and 10
     p "choose your weapon from your inventory #{weapon}"
     input = gets.chomp.downcase.to_s
     if klass == "knight"
       base_damage*=2
     elsif klass == "archer"
       base_damage *=0.2
-      elsif klass == "Jakob Widebrant" 
-        base_damage *=133.7
-      elsif klass == "peasant"
-        base_damage*=1.5
-      elsif klass == "alchemist"
-        base_damage *=rand(1..1.3)
-      elsif klass == "ranger"
-        base_damage *= 0.4
-      end
+    elsif klass == "Jakob Widebrant" 
+      base_damage *=13.37
+    elsif klass == "peasant"
+      base_damage*=1.2
+    elsif klass == "alchemist"
+      base_damage *=(rand(10..20)/10)
+    elsif klass == "ranger"
+      base_damage *= 0.4
     else 
       puts "unknown class. No damage modifier"  
-    
-    damage = base_damage * weapon - #enemy_armor?
-    enemy_health = enemy.health - damage #enemy health
-    if enemy_health <= 0  #enemy dead
-      puts "You have killed the #{enemy}"
     end
-    puts "You attack the #{enemy} with your #{weapon}!"
-    puts "You deal #{damage} damage."
+
+    damage = base_damage * weapon #- enemy_armor?
+
+    # Nedan kommer inte att funka, det får ske på något annat sätt, ska inte heller vara i denna metod
+
+    #
+    # enemy_health = enemy.health - damage #enemy health
+    # if enemy_health <= 0  #enemy dead
+    #   puts "You have killed the #{enemy}"
+    # end
+    # puts "You attack the #{enemy} with your #{weapon}!"
+    # puts "You deal #{damage} damage."
   end
   
   def save(room)
@@ -127,6 +207,13 @@ class person
       i += 1
     end
     fil.puts(helpstr)
+    i = 0
+    helpstr = ""
+    while i < @armour.length
+      helpstr << "#{@armour[i]} " 
+      i += 1
+    end
+    fil.puts(helpstr)
     fil.puts(room)
     fil.close
   end 
@@ -144,14 +231,12 @@ class person
     @klass = lines[3].chomp
     @health = lines[4].chomp.to_i
 
-    arr = lines[5].chomp.split
-    @inventory[0] = arr.dup
-    arr = lines[6].chomp.split
-    @inventory[1] = arr.dup
-    arr = lines[7].chomp.split
-    @inventory[2] = arr.dup
-    arr = lines[8].chomp.split
-    @inventory[3] = arr.dup
+    @inventory[0] = lines[5].chomp.split.dup
+    @inventory[1] = lines[6].chomp.split.dup
+    @inventory[2] = lines[7].chomp.split.dup
+    @inventory[3] = lines[8].chomp.split.dup
+    @armour = lines[9].chomp.split.dup
+    @room = lines[10].chomp
   end
   
   def pick_up(item)
@@ -172,20 +257,96 @@ class person
 
   def drop(item)
     if @weapons.contains?(item)
-      @inventory[0].delete(item)
+      place = contains_item(@inventory[0], item)
+      if place != false
+        @inventory[0].delete_at(place)
+      end
     elsif @tools.contains?(item)
-      @inventory[1].delete(item)
-    elsif @armor.contains?(item)
-      @inventory[3].delete(item)
+      place = contains_item(@inventory[1], item)
+      if place != false
+        @inventory[1].delete_at(place)
+      end
     elsif @potions.contains?(item)
-      @inventory[4].delete(item)
+      place = contains_item(@inventory[2], item)
+      if place != false
+        @inventory[2].delete_at(place)
+      end
     else
-      @inventory[5].delete(item)
+      place = contains_item(@inventory[3], item)
+      if place != false
+        @inventory[3].delete_at(place)
+      end
     end
   end
 
+  # Denna funktion kollar om inventory innehåller ett item
+  def contains_item(item)
+    i=0
+    while (i < @inventory.length)
+      if (str[i] == item)
+        return i
+      end
+      i+=1
+
+    end
+    return false
+  end
+
+
+  # hjälp metoder för att få ut olika värden för Player
+  def name()
+    return @name
+  end
+  def age()
+    return @age
+  end
+  def inventory()
+    return @inventory
+  end
+  def health()
+    return @health
+  end
+  def max_health()
+    return @max_health
+  end
+  def room()
+    return @room
+  end
+  def klass()
+    return @klass
+  end
+  def race()
+    return @race
+  end
+  def melee_weapons()
+    return @inventory[0]
+  end
+  def ranged_weapons()
+    return @inventory[1]
+  end
+  def potions()
+    return @inventory[2]
+  end
+  def misc()
+    return @inventory[3]
+  end
+  def armour_set()
+    return @armour[0]
+  end
+  def armour_value()
+    return @armour[1]
+  end
+
+
+
     
 end
+
+# Hjälp funtioner
+
+
+
+
 
 
 #funktioner för alla rum i spelet //hade varit nice om de ligger i en separat fil sedan
@@ -260,7 +421,7 @@ def room_to_the_west()
     puts "You drank from the cup and you start felin how your stomach is hurting and your eyes star poping out from your head willes your holding on to your life by the thread befor you die"
     puts "You have died and lost the game"
     puts "Game over"
-    break
+    # break
   elsif cup == "left"
     puts "In the cup that you chose their was water and you can now continue playing"
   elsif cup == "right"
@@ -299,7 +460,7 @@ def room_to_the_south()
   if player.health <= 0
     puts "You have died and lost the game"
     puts "Game over"
-    break
+    # break
   elsif gustaf.health <= 0
     puts "You have killed Gustaf and won the battle"
     puts "You can now pick up his weapon and add it to your inventory"
@@ -340,40 +501,40 @@ def room_to_the_east()
   end
   if player == 3
     puts "You win the game!"
-    puts "You can now move on to the next room"
+    puts "You get a reward!"
+    # fixa reward
   elsif computer == 3
     puts "You lose the game!"
-    puts "Game over"
-    break
+    puts "You get no reward!"
+    
   end
 end
 
-#rum 5 boss rom the boses name is Minator he has 200 health and he is a hard boss to beat
-#minator måste läggas in i enemy klassen och han måste ha en health och damage system
-def Minator()
-  person.save(Minator())
-  puts "autosave "
-  puts "you have entered the Minator layer their is onley one way out either kill the minator or die trying"
-  puts "The minator has 200 health and a giant axe that deals hevy hits with devestating damaged if he hits you he does not have anny ranged attacks"
-  minator.health = 200
-  while minator.health>0 && person.health>0
-    puts "in front of you is a giant named Minator that has know spotted you"
-    puts "chosse attack meele or ranged"  
+#rum 5 boss rom the boss's name is Minotaor, he has 200 health and he is a hard boss to beat
+#minotaor måste läggas in i enemy klassen och han måste ha en health och damage system, vi måste fixa så att 
+def Minotaor()
+  # person.save(Minotaor())      Detta fungerar inte! Minotaor kan inte vara en "person"
+  puts "you have entered the Minotaor layer. There is only one way out, either kill the minotaor or die trying"
+  puts "The minotaor has 200 health and a giant axe that deals heavy hits with devestating damage. He does not have anny ranged attacks"
+  minotaor_health = 200
+  while minotaor_health>0 && person.health>0
+    puts "in front of you is a giant named Minotaor that has now spotted you"
+    puts "chosse what you want to do! meele, ranged or potion"  
     attack = gets.chomp.strip.downcase.to_s
     while valid_attacks.include?(attack) == false
-      puts "chosse valid attack, meele or ranged"
+      puts "chosse valid attack, meele ranged or potion"
       attack = gets.chomp.strip.downcase.to_s
     end
     if attack == "meele"
-      puts "You attack Minator with your meele attack"
-      person.melee_attack(weapon, minator)
-      minator.health -= 20 #fixa med damged system
-      puts "Minator has now #{minator.health} health left"
+      puts "You attack Minotaor with your meele attack"
+      person.melee_attack(weapon)
+      minotaor_health -= 20 #fixa med damged system
+      puts "Minotaor has now #{minotaor_health} health left"
     elsif attack == "ranged"
-      puts "You attack Minator with your ranged attack"
-      person.ranged_attack(weapon, minator)
-      minator.health -= 20 #fixa med damged system
-      puts "Minator has now #{minator.health} health left"
+      puts "You attack Minotaor with your ranged attack"
+      
+      minotaor_health -= person.ranged_attack(weapon)/min #fixa med damged system
+      puts "Minotaor has now #{minotaor_health} health left"
     end
   end
 end
@@ -383,4 +544,4 @@ end
 
 #starta spelet
 puts "Welcome to the game"
-hugo = person.new()
+hugo = Player.new()
