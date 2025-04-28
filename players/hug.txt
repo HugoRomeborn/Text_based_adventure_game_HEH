@@ -1,0 +1,12 @@
+hug
+44
+orc
+knight
+200
+ Half_Sword 
+ 
+ 
+ 
+ 
+ no_armour 0 
+room_to_the_north

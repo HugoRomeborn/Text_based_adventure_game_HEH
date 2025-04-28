@@ -1,0 +1,12 @@
+hem
+77
+orc
+knight
+200
+ Half_Sword 
+ 
+ 
+ 
+ 
+ no_armour 0 
+entrance
