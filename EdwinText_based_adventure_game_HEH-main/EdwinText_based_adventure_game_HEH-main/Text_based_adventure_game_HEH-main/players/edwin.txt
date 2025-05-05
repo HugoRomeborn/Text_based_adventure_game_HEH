@@ -1,13 +1,13 @@
-hugo
-69
+edwin
+82
 human
 knight
 200
- half_sword 
+ Half_Sword 
  
  
  
  
  no_armour 0 
-room_to_the_south
+entrance
 0

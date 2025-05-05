@@ -1,13 +1,13 @@
 peg
-69
+3
 elf
-knight
-200
- Half_Sword 
+jakob widebrant
+400
+ gamecubespiklubba 
  
  
  
  
  no_armour 0 
-entrance
-500
+room_to_the_south
+0

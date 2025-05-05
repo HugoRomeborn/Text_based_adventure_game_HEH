@@ -1,0 +1,13 @@
+peg
+69
+elf
+knight
+200
+ Half_Sword 
+ 
+ 
+ 
+ 
+ no_armour 0 
+entrance
+500

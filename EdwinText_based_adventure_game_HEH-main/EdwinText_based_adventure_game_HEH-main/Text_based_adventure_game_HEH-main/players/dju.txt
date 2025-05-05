@@ -1,0 +1,13 @@
+dju
+37
+elf
+ranger
+100
+ 
+ hunting_bow 
+ 
+ 
+ 
+ no_armour 0 
+entrance
+0

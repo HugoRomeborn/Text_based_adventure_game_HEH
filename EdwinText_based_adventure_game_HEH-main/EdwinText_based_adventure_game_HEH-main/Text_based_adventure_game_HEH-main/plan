@@ -1,0 +1,28 @@
+https://prod.liveshare.vsengsaas.visualstudio.com/join?7B551BB554537AC4FE1C5B51DCE8C61560FF
+TBA?
+
+
+Teman. 
+Filer för typ allt
+inventory och stats i samma fil
+
+Live-share && git-hub-repo
+
+vad vi vill ha?
+
+Inventory (sparas i fil och nivå)
+
+välja miljö 
+inventory (weapons, tools, potions mm)
+kunna välja klass /ras
+hälsa och armor
+strength (alla behöver ett max)
+story (kanske ai-api men förmodligen inte)
+avslutning (död, död, död, kung kejsare av världens avgrund(hades eller (kronos din pappa)) )
+
+To Do:
+1. Skapa ett ramverk så att man alltid kan använda vissa basic funktioner i varje rum (typ kolla inventory, se hur mycket pengar man har och annat användbart.)
+2. fixa fighting systemet
+3. skapa fler rum
+
+

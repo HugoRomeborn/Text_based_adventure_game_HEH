@@ -1,0 +1,13 @@
+bög
+82
+elf
+peasant
+50
+ muddy_rock 
+ 
+ 
+ 
+ 
+ no_armour 0 
+entrance
+0
