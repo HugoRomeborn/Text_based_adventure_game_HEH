@@ -1,0 +1,13 @@
+hem
+6
+elf
+peasant
+50
+ muddy_rock 
+ 
+ 
+ 
+ 
+ no_armour 0 
+room_to_the_east
+0

@@ -32,7 +32,7 @@ class Player
     @inventory = [[], [], [[],[]], []]
     @max_health = 100
     @armour = ["no_armour", 0] #fixa sennare
-    @money = 0
+    @money = 10
    
     # Kollar om spelaren har spelat tidigare 
     # om spelaren har spelat tidigare så laddar vi in deras karaktär
@@ -130,7 +130,7 @@ class Player
       
       @room = "entrance"
     end
-    money = 0
+    money = 10
     
     save() #autosave
     puts "autosave"
@@ -178,23 +178,25 @@ class Player
     end
     puts "You have chosen the #{weapon}"
 
-    
-    if weapon == "gamecubespiklubba"
+    case weapon
+    when "gamecubespiklubba"
       base_damage *= 3.5
-    elsif weapon == "lasersvärd"
+    when "lasersvärd"
       base_damage *= 2.0
-    elsif weapon == "great_axe"
+    when "great_axe"
       base_damage *= 2.5
-    elsif weapon == "staff_of_alchemy"
+    when "staff_of_alchemy"
       base_damage *= 0.5
-    elsif weapon == "rusty_spear"
+    when "rusty_spear"
       base_damage *= 0.8
-    elsif weapon == "muddy_rock"
+    when "muddy_rock"
       base_damage *= 0.5
-    elsif weapon == "two_handed_sword"
+    when "two_handed_sword"
       base_damage *= 2.0
-    elsif weapon == "half_Sword"
+    when "half_Sword"
       base_damage *= 1.2
+    when "pitchfork"
+      base_damage *= 1.1
     end
 
 
@@ -239,9 +241,9 @@ class Player
         return 50
       elsif potion == "one_hit_potion"
         puts "You deal infinite damage."
-        return 99999999
+        return 999
       end
-    elsif potion_type == "health"
+    elsif potion_type == "health" 
       puts "You have the following health potions in your inventory: #{@inventory[2][0]}"
       puts "Choose a health potion to use: "
       potion = gets.chomp.downcase.to_s
@@ -378,7 +380,7 @@ class Player
     end
   end
 
-  #Namn: Edwin Pegalow och Hugo Romeborn
+  #Namn: Edwin Pegelow och Hugo Romeborn
   def drop(item)
     if @@weapons.include?(item)
       place = include?(@inventory[0], item)
@@ -469,7 +471,7 @@ def room_to_the_north()
     puts "valid answers are: fire, ballon, shadow, water or wind"
     answer = gets.chomp.downcase.to_s
   end
-  if answer == "fire" # vi behöver fixa så att det går att plocka upp vapnet
+  if answer == "fire" 
     puts "You have solved the riddle and the chest is now open"
     puts "Inside the chest you find a mythic weapon that will grant you power"
     puts "You can now pick up the weapon and add it to your inventory"
@@ -477,22 +479,23 @@ def room_to_the_north()
       puts "You now have a great axe"
       $player1.pick_up("great_axe")
     elsif $player1.klass == "jakob widebrant"
+      puts "You now have a gamecubespiklubba"
       $player1.pick_up("gamecubespiklubba")
     elsif $player1.klass == "peasant"
+      puts "You now have a rusty_spear"
       $player1.pick_up("rusty_spear")
     elsif $player1.klass == "alchemist"
+      puts "You now have a max_health_potion"
       $player1.pick_up("max_health_potion")
     elsif $player1.klass == "ranger"
+      puts "You now have a giant_hunting_bow"
       $player1.pick_up("giant_hunting_bow")
     end
   else
     puts "You have failed to solve the riddle and the chest is still locked"
   end
 
-  
-
-  return "minotaur"
-  #efter rummet så behöver spelaren antingen välja ett annat rum elle skikas till ett nytt rum
+  return room_to_the_south()
 end
 
 
@@ -516,11 +519,28 @@ def room_to_the_west()
     puts "You drank from the cup and you start felin how your stomach is hurting and your eyes star poping out from your head willes your holding on to your life by the thread befor you die"
     puts "You have died and lost the game"
     puts "Game over"
-    # break
+  
   elsif cup == "left"
     puts "In the cup that you chose there was water and you can now continue playing"
   elsif cup == "right"
     puts "You have chossen wisely in the cup that you chose their was a strength potion that will grant strengt through out your jorney"
+  end
+  
+  puts "You see two doors infront of you, one to the left and one to the right"
+  puts "Which door do you want to go through?"
+  puts "1. Left door"
+  puts "2. Right door"
+  choice = gets.chomp.to_i
+  while choice != 1 && choice != 2
+    puts "Please choose a valid door!"
+    puts "1. Left door"
+    puts "2. Right door"
+    choice = gets.chomp.to_i
+  end
+  if choice == 1
+    return "room_6"
+  elsif choice == 2
+    return "room_7"
   end
 end
 
@@ -562,7 +582,7 @@ def room_to_the_south()
   if choice == 1
     return "room_6"
   elsif choice == 2
-    return "room_8"
+    return "room_7"
   elsif choice == 3
     return "room_9"
   else
@@ -572,7 +592,7 @@ def room_to_the_south()
 end
 
 #I detta rum så kommer du behöva klara ett pussel/spel det kommer vara ett sten sax påse spel med försten till tre
-#Namn: Hugo Karlsson
+#Namn: Hugo Karlsson (sten sax påse puzzel: Edwin pegelow)
 def room_to_the_east()
   $player1.save()
   puts "autosave "
@@ -612,10 +632,28 @@ def room_to_the_east()
   end
 
   if player_score == 3
-    puts " You win the game! You get a reward!"
-    #Give reward
+    puts "You win the game! You get a reward!"
+    puts "you pick up a medium health potion and 20 money"
+    $player1.pick_up("medium_health_potion")
+    $player1.money += 20
   else
-    puts " You lose the game! No reward this time."
+    puts "You lose the game! No reward this time."
+  end
+  puts "You see two doors infront of you, one to the left and one to the right"
+  puts "Which door do you want to go through?"
+  puts "1. Left door"
+  puts "2. Right door"
+  choice = gets.chomp.to_i
+  while choice != 1 && choice != 2
+    puts "Please choose a valid door!"
+    puts "1. Left door"
+    puts "2. Right door"
+    choice = gets.chomp.to_i
+  end
+  if choice == 1
+    return "room_7"
+  elsif choice == 2
+    return "room_6"
   end
 end
 
@@ -625,7 +663,7 @@ end
 # Exempel:
   # "game over" betyder du dog
 # Datum: 04-05-2025
-# Namn: Hugo Romeborn, Hugo Karlsson och Edvin Pegelow
+# Namn: Hugo Romeborn, Hugo Karlsson och Edwin Pegelow
 def room_5()
   $player1.save()
   puts "autosave "
@@ -685,6 +723,8 @@ def room_6()
     when false 
       $player1.health -=5
     end
+    $riddles.delete(riddle)
+    puts "yor health is now #{$player1.health}"
   end
   if $player1.health < 0 
     return "game over"
@@ -699,23 +739,72 @@ def room_6()
     when "peasant"
       $player1.pick_up("pitchfork")
     when "alchemist"
-      $player1.pick_up("large_damage_potion")
+      $player1.pick_up("one_hit_potion")
       $player1.pick_up("small_damage_potion")
     when "ranger"
-
+      $player1.pick_up("small_health_potion")
+      $player1.pick_up("dagger")
     end
   end
-
+  puts "You see two doors infront of you, one to the left and one to the right"
+  puts "Which door do you want to go through?"
+  puts "1. Left door"
+  puts "2. Right door"
+  choice = gets.chomp.to_i
+  while choice != 1 && choice != 2
+    puts "Please choose a valid door!"
+    puts "1. Left door"
+    puts "2. Right door"
+    choice = gets.chomp.to_i
+  end
+  if choice == 1
+    return "room_9"
+  elsif choice == 2
+    return "room_9"
+  end
 end
 
 #strid
 def room_7()
   $player1.save()
+  puts "You have encountered a drunken old Adventurer who is trying to fight you"
+  puts "He is not very strong, but he is very drunk and will attack you with a bottle of beer"
+  
+  fight_results = enemy([name: "Drunk Adventerur", health: 25, attack: 10, armour: 0, attack_type: "beer_bottle"])
+  if fight_results == "win"
+    puts "congratulations great adventerur you have defeted the drunken old adventerur"
+    puts "to reward you great adventerur, here is a small health potion and 20 money"
+    $player1.pick_up("small_health_potion")
+    $player1.money += 20
+    puts "You can now continue your adventure"
+  elsif fight_results == "lose"
+    return "game_over"
+  else
+    raise "Error - Unknown fight result"
+  end
+
+  puts "You see two doors infront of you, one to the left and one to the right"
+  puts "Which door do you want to go through?"
+  puts "1. Left door"
+  puts "2. Right door"
+  choice = gets.chomp.to_i
+  while choice != 1 && choice != 2
+    puts "Please choose a valid door!"
+    puts "1. Left door"
+    puts "2. Right door"
+    choice = gets.chomp.to_i
+  end
+  if choice == 1
+    return "room_9"
+  elsif choice == 2
+    return "room_11"
+  end
+  
 end
 
 #ej strid
 def room_8()
-  player1.save()
+  $player1.save()
 
   fight_results = enemy([name: "minotaur", health: 100, attack: 10, armour: 5, attack_type: "bow"])
 end
@@ -726,11 +815,13 @@ def room_9()
   puts "autosave "
   puts "You have enterd the dragons layer and in the middle of the roms is a baby dragon but dont let its size fool you"
   puts "The baby dragon has emens power"
-  fight_results = enemy([name: "baby_dragon", health: 35, attack: 19, armour: 0, attack_type: "fire_breath"])
+  fight_results = enemy({name: "baby dragon", health: 35.0, attack: 19.0, armour: 0, attack_type: "fire breath"})
   if fight_results == "win"
     puts "You have killed baby_dragon and won the battle"
-    puts "To reward you great adventerur, here is a medium health potion"
+    puts "To reward you great adventerur, here is a medium health potion and 20 money"
     $player1.pick_up("medium_health_potion")
+    $player1.money += 20
+    
     puts "You can now continue your adventure"
   elsif fight_results == "lose"
     return "game_over"
@@ -752,7 +843,7 @@ def room_9()
   if choice == 1
     return "room_11"
   elsif choice == 2
-    return "room_10"
+    return "room_12"
   end
 end
 
@@ -770,8 +861,9 @@ def room_11()
   fight_results = enemy([name: "Edvin Pegelows dead body", health: 42.0, attack: 9.0, armour: 0, attack_type: "kemistry bock"])
   if fight_results == "win"
     puts "You have defeted heels demon"
-    puts "to reward you great adventerur, here is a medium health potion"
+    puts "to reward you great adventerur, here is a medium health potion and 20 money"
     $player1.pick_up("medium_health_potion")
+    $player1.money += 20
     puts "You can now continue your adventure"
   elsif fight_results == "lose"
     return "game_over"
@@ -791,7 +883,7 @@ def room_11()
     choice = gets.chomp.to_i
   end
   if choice == 1
-    return "room_13"
+    return "room_14"
   elsif choice == 2
     return "room_12"
   end
@@ -803,11 +895,13 @@ def room_12()
   puts "autosave"
   puts "in front of you great adventerur there is a tree with a sloth"
   puts "be careful hiss body is very strong and will deal alot of damage but he has like no health"
-  fight_results = enemy([name: "sloth", health: 3.0, attack: 77.0, armour: 0, attack_type: "body slam from a tree"])
+  fight_results = enemy({name: "sloth", health: 3.0, attack: 77.0, armour: 0, attack_type: "body slam from a tree"})
   if fight_results == "win"
     puts "congratulations great adventerur you have defetead the sloth that had a whole of 3 hp"
     puts "to congratulate you i want to reward you with a small healt potion so that you may recover"
     $player1.pick_up("small_health_potion")
+    $player1.money += 20
+    puts "you received a small health potion and 20 money"
     puts "You can now continue your adventure"
   elsif fight_results == "lose"
     return "game_over"
@@ -827,7 +921,7 @@ def room_12()
     choice = gets.chomp.to_i
   end
   if choice == 1
-    return "room_13"
+    return "room_14"
   elsif choice == 2
     return "room_14"
   end
@@ -881,6 +975,8 @@ def room_14()
     puts ""
     puts "A ghostly image of the panther appears briefly at your side, then fades."
     $player1.pick_up("small_health_potion")
+    $player1.money += 20
+    puts "you received a small health potion and 20 money"
     puts "You discover a glowing vial nestled in the grass. Drinking it restores your strength."
     sleep(2)
     puts ""
@@ -910,9 +1006,9 @@ def room_14()
     choice = gets.chomp.to_i
   end
   if choice == 1
-    return "room_16"
+    return "room_15"
   elsif choice == 2
-    return "room_16"
+    return "room_15"
   end
 end
 
@@ -937,6 +1033,8 @@ def room_15()
   if fight_results == "win"
     puts "The Storm Serpent screeches, dissipating into mist and sparks. The runes pulse in approval."
     $player1.pick_up("small_health_potion")
+    $player1.money += 20
+    puts "you received a small health potion and 20 money"
     puts "You can now continue your adventure"
   elsif fight_results == "lose"
     return "game_over"
@@ -999,11 +1097,11 @@ def room_16()
   puts "And he is not pleased to see you."
   sleep(2)
   puts ""
-  puts "🔥 Prepare for battle. 🔥"
+  puts "  Prepare for battle. "
   puts ""
 
   # BATTLE
-  fight_results = enemy(name: "Balerion", health: 100.0, attack: 20.0, armour: 10, attack_type: "fire")
+  fight_results = enemy(name: "Balerion", health: 400.0, attack: 20.0, armour: 10, attack_type: "fire")
 
   if fight_results == "win"
     puts ""
@@ -1011,6 +1109,7 @@ def room_16()
     sleep(2)
     puts "You stand victorious — scorched, but alive."
     $player1.pick_up("small_health_potion")
+    $player1.money += 500
     puts "You drink a potion and feel strength return to your limbs."
     sleep(2)
     puts "The path forward splits into two."
@@ -1037,11 +1136,9 @@ def room_16()
     choice = gets.chomp.to_i
   end
 
-  if choice == 1
-    return "room_13"
-  else
-    return "room_14"
-  end
+  
+  return "win"
+  
 end
 
 # Beskrivning: Olika typer av fiender som kan mötas i spelet funkktion för en fiende strid som kan sättas in i ett rum fienden kommer att ha en health och damage system som kommer att vara olika för varje fiende Fiendens stats bestäms av en hash som skickas in i funktionen     
@@ -1050,10 +1147,11 @@ end
 # Exempel:
   #result = enemy({ name: "Gustaf", health: 200, attack: 8, armour: 5, attack_type: "axe" })
 # Datum: 28-04-2025
-# Namn: Hugo Romeborn, Hugo Karlsson och Edvin Pegelow
+# Namn: Hugo Romeborn, Hugo Karlsson och Edwin Pegelow
 def enemy(enemy)
   valid_attacks = ["inventory", "health", "meele", "potion"]
-  puts "You have encountered #{enemy[:name]}!"
+  p enemy[:name]
+  puts "You have encountered #{enemy[:name]}"
   puts "You can now fight the #{enemy[:name]}"
   puts "You can also check your health by typing 'health'"
   puts "You can also check your inventory by typing 'inventory'"
@@ -1115,7 +1213,7 @@ end
 # Exempel:
  
 # Datum: 28-04-2025
-# Namn: Hugo Romeborn, Hugo Karlsson och Edvin Pegelow
+# Namn: Hugo Romeborn, Hugo Karlsson och Edwin Pegelow
    
 def shop()
   puts "You have entered the shop"
@@ -1229,7 +1327,7 @@ def shop()
       end
 
     when "sell"
-      puts "not implemented yet"
+      puts "The buyer is broke(not implemented yet)"
     else
       puts "Invalid action. Please try again."
     end
@@ -1322,6 +1420,7 @@ def riddle_2()
   puts "Jag har utrymmen men inga rum"
   puts "Du kan gå in men inte komma ut"
   puts "Vad är jag?"
+  puts "(tips tänk på engelska)"
   puts "1. Ett piano"
   puts "2. En labyrint"
   puts "3. Ett tangentbord"
@@ -1392,13 +1491,13 @@ def riddle_5()
   puts "Jag har ett huvud, en fot men inga ben"
   puts "Vad är jag?"
   puts "1. En säng"
-  puts "2. En mynt"
+  puts "2. Ett mynt"
   puts "3. En stol"
   answer = gets.chomp.to_i
   while answer != 1 && answer != 2 && answer != 3
     puts "Please choose a valid answer"
     puts "1. En säng"
-    puts "2. En mynt"
+    puts "2. Ett mynt"
     puts "3. En stol"
     answer = gets.chomp.to_i
   end

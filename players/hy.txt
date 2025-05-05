@@ -1,0 +1,13 @@
+hy
+7
+dwarf
+peasant
+60
+ muddy_rock pitchfork 
+ 
+ medium_health_potion small_health_potion 
+ 
+ 
+ no_armour 0 
+room_9
+20

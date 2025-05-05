@@ -1,13 +1,13 @@
-peg
-3
+he
+5
 elf
 jakob widebrant
-398
+400
  gamecubespiklubba 
  
- medium_health_potion 
+ 
  
  
  no_armour 0 
-room_6
+room_to_the_south
 0

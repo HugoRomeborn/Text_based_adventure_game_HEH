@@ -1,0 +1,13 @@
+hug
+5
+elf
+jakob widebrant
+285
+ gamecubespiklubba 
+ 
+ medium_health_potion medium_health_potion small_health_potion small_health_potion 
+ 
+ 
+ no_armour 0 
+room_16
+0
